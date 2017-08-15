@@ -8,32 +8,31 @@
 
         <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
 
-        <vg-scrub-bar>
-            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+        <vg-scrub-bar [vgSlider]="true">
+            <vg-scrub-bar-current-time [vgSlider]="true"></vg-scrub-bar-current-time>
             <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
         </vg-scrub-bar>
 
         <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
         <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
 
-        <vg-track-selector></vg-track-selector>
         <vg-mute></vg-mute>
         <vg-volume></vg-volume>
 
         <vg-fullscreen></vg-fullscreen>
     </vg-controls>
     <video
-        #secundary
-        [vgMedia]="secundary"
+        #primary
+        [vgMedia]="primary"
         [vgMaster]="true"
-        id="otherVideo"
+        id="firstVideo"
         preload="auto">
         <source src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" type="video/mp4" >
     </video>
     <video 
-        #primary 
-        [vgMedia]="primary" 
-        id="singleVideo" 
+        #secondary 
+        [vgMedia]="secondary" 
+        id="secondVideo" 
         preload="auto" 
         crossorigin>
         <source src="http://static.videogular.com/assets/videos/videogular.mp4" type="video/mp4">

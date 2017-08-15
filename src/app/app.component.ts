@@ -9,36 +9,43 @@ import { VgEvents } from 'videogular2/src/core/events/vg-events';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  elem: any;
 
-  buffer: any;
-  buffer2: any;
+  firstVideo: any;
+  secondVideo: any;
+  flag: boolean;
 
-  constructor( private api: VgAPI) { }
+  constructor(private api: VgAPI) { }
 
   onPlayerReady(api: VgAPI) {
     this.api = api;
-    this.api.getDefaultMedia().subscriptions.timeUpdate.subscribe(
-      () => {
-        this.buffer = this.api.getMediaById('otherVideo');
-        this.buffer2 = this.api.getMediaById('singleVideo');
-        console.log(this.buffer);
-        console.log(this.buffer2);
+    this.api.getMasterMedia().subscriptions.timeUpdate.subscribe(() => {
+      this.firstVideo = this.api.getMediaById('firstVideo');
+      this.secondVideo = this.api.getMediaById('secondVideo');
+      console.log('1stBuffer', this.firstVideo);
+      console.log('2ndbBuffer', this.secondVideo);
+      console.log('Current', this.secondVideo.currentTime * 1000);
 
-        if (this.buffer.time.left === 0) {
-          this.buffer2.pause();
+
+      if (!this.firstVideo.time.left) {
+        this.secondVideo.pause();
+      }
+
+      // launch when buffer is detected
+      if (this.firstVideo.isBufferDetected || this.secondVideo.isBufferDetected) {
+        console.warn('buffer!!');
+        // Pause the video if some buffer is waiting for data
+        if (this.firstVideo.isWaiting || this.secondVideo.isWaiting) {
+          this.firstVideo.pause();
+          this.secondVideo.pause();
         }
 
-        if (this.buffer.isBufferDetected || this.buffer2.isBufferDetected  ) {
-          this.buffer.pause();
-          this.buffer2.pause();
-          console.warn('buffer!!');
-        } else {
-          if ( !this.buffer.isWaiting && !this.buffer2.isWaiting ) {
-            this.buffer.play();
-            this.buffer2.play();
-          }
+        if (this.firstVideo.canPlayThrough || this.secondVideo.canPlayThrough) {
+          this.firstVideo.play();
+          this.secondVideo.play();
         }
+        console.log('buffer1', this.firstVideo);
+        console.log('buffer2', this.secondVideo);
+      }
     });
   }
 }
