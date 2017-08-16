@@ -6,22 +6,36 @@
         <vg-play-pause></vg-play-pause>
         <vg-playback-button></vg-playback-button>
 
-        <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+        <vg-time-display vgProperty="current" vgFormat="mm:ss" vgFor="secondVideo"></vg-time-display>
 
         <vg-scrub-bar [vgSlider]="true">
-            <vg-scrub-bar-current-time [vgSlider]="true"></vg-scrub-bar-current-time>
-            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+            <vg-scrub-bar-current-time [vgSlider]="true" vgFor="secondVideo"></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time vgFor="secondVideo"></vg-scrub-bar-buffering-time>
         </vg-scrub-bar>
 
-        <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
-        <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+        <vg-time-display vgProperty="left" vgFormat="mm:ss" vgFor="secondVideo"></vg-time-display>
+        <vg-time-display vgProperty="total" vgFormat="mm:ss" vgFor="secondVideo"></vg-time-display>
 
-        <vg-mute></vg-mute>
-        <vg-volume></vg-volume>
+        <vg-mute vgFor="secondVideo" ></vg-mute>
+        <vg-volume vgFor="secondVideo" ></vg-volume>
 
         <vg-fullscreen></vg-fullscreen>
     </vg-controls>
+
+    <vg-controls class="top">
+        <vg-mute vgFor="firstVideo" ></vg-mute>
+        <vg-volume vgFor="firstVideo" ></vg-volume>
+    </vg-controls>
+
+
+    <vg-controls class="bottom">
+        <vg-mute vgFor="audio" ></vg-mute>
+        <vg-volume vgFor="audio" ></vg-volume>
+    </vg-controls>
+
+
     <video
+        class="primary"
         #primary
         [vgMedia]="primary"
         [vgMaster]="true"
@@ -29,20 +43,23 @@
         preload="auto">
         <source src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" type="video/mp4" >
     </video>
+
     <video 
+        class="secondary"
         #secondary 
         [vgMedia]="secondary" 
         id="secondVideo" 
-        preload="auto" 
-        crossorigin>
+        preload="auto">
         <source src="http://static.videogular.com/assets/videos/videogular.mp4" type="video/mp4">
     </video>
-    <!-- <app-player
-      #myTimer
-      id="myTime"
-      [duration]="primary.duration"
-      [vgMedia]="myTimer">
-    </app-player> -->
+
+    <audio 
+        #myAudio
+        [vgMedia]="myAudio"     
+        id="audio"
+        preload="auto">
+        <source src="http://ia600304.us.archive.org/10/items/TheKyotoConnection-noHeadphonesRequired/03TheBestDaysOfMyLife.mp3" type="audio/mp3">
+    </audio>
 
    
 </vg-player>

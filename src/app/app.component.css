@@ -2,3 +2,38 @@ video {
     width: 50%;
     display: flex;
 }
+
+.primary {
+width: 30%;
+}
+
+.secondary {
+width: 70%;
+}
+
+vg-controls {
+    width: 70%;
+    right: 0;
+}
+
+:host >>> .vg-overlay-play {
+    width: 70% !important;
+    right: 0 !important;
+}
+
+:host >>> .vg-buffering {
+    width: 70% !important;
+    right: 0 !important;
+}
+
+.top {
+    width: 30%;
+    top: 0;
+    left: 0;
+}
+
+.bottom {
+    width: 15%;
+    bottom: 0;
+    left: 0;
+}
