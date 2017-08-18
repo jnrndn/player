@@ -37,3 +37,8 @@ vg-controls {
     bottom: 0;
     left: 0;
 }
+
+.container {
+    margin-top: 50px;
+    text-align: center;
+}

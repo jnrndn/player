@@ -6,12 +6,10 @@ import { VgOverlayPlayModule } from 'videogular2/overlay-play';
 import { VgBufferingModule } from 'videogular2/buffering';
 
 import { AppComponent } from './app.component';
-import { PlayerComponent } from './player/player.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PlayerComponent
   ],
   imports: [
     BrowserModule,

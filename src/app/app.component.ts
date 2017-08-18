@@ -1,60 +1,85 @@
 import { Component } from '@angular/core';
 import { VgAPI } from 'videogular2/core';
-import { VgEvents } from 'videogular2/src/core/events/vg-events';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/startWith';
 
+export interface ISource {
+  url: string;
+}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
 
   firstVideo: any;
   secondVideo: any;
   audio: any;
+  api: VgAPI;
 
-  constructor(private api: VgAPI) { }
+  source: Array<ISource> = [
+    // tslint:disable-next-line:max-line-length
+    { url: 'https://apexsct-my.sharepoint.com/personal/carlos_angulo_yuxiglobal_com/Documents/Microsoft%20Teams%20Chat%20Files/matrix-min.mp4' },
+    { url: 'https://apexsct-my.sharepoint.com/personal/carlos_angulo_yuxiglobal_com/Documents/Microsoft%20Teams%20Chat%20Files/inmortals-min.mp4' },
+    // tslint:disable-next-line:max-line-length
+    { url: 'https://apexsct-my.sharepoint.com/personal/carlos_angulo_yuxiglobal_com/Documents/Microsoft%20Teams%20Chat%20Files/league-mn.mp4' },
+  ];
+
+  currentIndex = 0;
+  currentItem: ISource = this.source[this.currentIndex];
+
+  constructor() { }
 
   onPlayerReady(api: VgAPI) {
     this.api = api;
-    this.api.getMasterMedia().subscriptions.timeUpdate.subscribe(() => {
-      this.firstVideo = this.api.getMediaById('firstVideo');
-      this.secondVideo = this.api.getMediaById('secondVideo');
-      this.audio = this.api.getMediaById('audio');
-      console.log('1stBuffer', this.firstVideo);
-      console.log('2ndbBuffer', this.secondVideo);
-      console.log('Current', this.secondVideo.currentTime * 1000);
-
-      if (!this.firstVideo.time.left) {
-        this.secondVideo.pause();
-        this.audio.pause();
+    // this.audio = this.api.getMediaById('backgroundAudio');
+    // this.audio.volume = 0.6;
+    this.api.getMediaById('secondVideo').subscriptions.loadedMetadata.subscribe(() => {
+      this.playVideo();
+    });
+    this.api.getMediaById('secondVideo').subscriptions.ended.subscribe(() => {
+      this.nextVideo();
+      this.api.pause();
+    });
+    this.api.getMediaById('secondVideo').subscriptions.seeking.subscribe(timeSeeked => {
+      if (this.currentIndex === 0) {
+        this.api.getMediaById('firstVideo').currentTime = timeSeeked.target.currentTime;
+      } else if (this.currentIndex === 1) {
+        this.api.getMediaById('firstVideo').currentTime = timeSeeked.target.currentTime + 20;
+      } else {
+        this.api.getMediaById('firstVideo').currentTime = timeSeeked.target.currentTime + 40;
       }
-
-      // launch when buffer is detected
-      if (this.firstVideo.isBufferDetected || this.secondVideo.isBufferDetected) {
-        console.warn('buffer!!');
-        // Pause the video if some buffer is waiting for data
-        this.firstVideo.pause();
-        this.secondVideo.pause();
-        console.log('buffer1', this.firstVideo);
-        console.log('buffer2', this.secondVideo);
-        }
-      });
-
-    this.api.getMasterMedia().subscriptions.pause.subscribe(() => {
-      this.api.getMasterMedia().subscriptions.progress.subscribe(() => {
-        console.log('Estoy pausado y no he cargado el buffer');
-        this.firstVideo = this.api.getMediaById('firstVideo');
-        this.secondVideo = this.api.getMediaById('secondVideo');
-        console.log(this.firstVideo.isWaiting);
-        console.log(this.secondVideo.isWaiting);
-        if (this.firstVideo.isBufferDetected && this.secondVideo.isBufferDetected) {
-          console.log('Estoy pausado y ya cargué el buffer');
-          this.firstVideo.play();
-          this.secondVideo.play();
-        }
-      });
     });
   }
+
+  nextVideo() {
+    this.currentIndex++;
+    if (this.currentIndex === this.source.length) {
+      this.currentIndex = 0;
+    }
+    this.currentItem = this.source[this.currentIndex];
+  }
+
+  playVideo() {
+    this.api.play();
+  }
+
+  findIndex(number) {
+    this.currentIndex = number;
+    this.currentItem = this.source[this.currentIndex];
+  }
+
+  prevVideo() {
+    this.currentIndex--;
+    if (this.currentIndex === this.source.length) {
+      this.currentIndex = 0;
+    }
+    this.currentItem = this.source[this.currentIndex];
+  }
+
+
+
 }

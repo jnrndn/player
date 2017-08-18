@@ -23,7 +23,7 @@
     "@angular/router": "^4.0.0",
     "@types/core-js": "^0.9.42",
     "core-js": "^2.4.1",
-    "rxjs": "^5.4.1",
+    "rxjs": "5.1.0",
     "videogular2": "^5.4.11",
     "zone.js": "^0.8.14"
   },

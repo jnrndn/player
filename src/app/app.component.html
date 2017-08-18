@@ -12,9 +12,15 @@
             <vg-scrub-bar-current-time [vgSlider]="true" vgFor="secondVideo"></vg-scrub-bar-current-time>
             <vg-scrub-bar-buffering-time vgFor="secondVideo"></vg-scrub-bar-buffering-time>
         </vg-scrub-bar>
+        <vg-scrub-bar [vgSlider]="true"class="top" >
+            <vg-scrub-bar-current-time [vgSlider]="true" vgFor="firstVideo"></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time vgFor="firstVideo"></vg-scrub-bar-buffering-time>
+        </vg-scrub-bar>
 
         <vg-time-display vgProperty="left" vgFormat="mm:ss" vgFor="secondVideo"></vg-time-display>
         <vg-time-display vgProperty="total" vgFormat="mm:ss" vgFor="secondVideo"></vg-time-display>
+        <vg-time-display vgProperty="left" vgFormat="mm:ss" vgFor="firstVideo"></vg-time-display>
+        <vg-time-display vgProperty="total" vgFormat="mm:ss" vgFor="firstVideo"></vg-time-display>
 
         <vg-mute vgFor="secondVideo" ></vg-mute>
         <vg-volume vgFor="secondVideo" ></vg-volume>
@@ -28,39 +34,45 @@
     </vg-controls>
 
 
-    <vg-controls class="bottom">
-        <vg-mute vgFor="audio" ></vg-mute>
-        <vg-volume vgFor="audio" ></vg-volume>
-    </vg-controls>
-
+    <!-- <vg-controls class="bottom">
+        <vg-mute vgFor="backgroundAudio" ></vg-mute>
+        <vg-volume vgFor="backgroundAudio"></vg-volume>
+    </vg-controls> -->
 
     <video
         class="primary"
         #primary
         [vgMedia]="primary"
-        [vgMaster]="true"
         id="firstVideo"
         preload="auto">
-        <source src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" type="video/mp4" >
+        <source src="https://apexsct-my.sharepoint.com/personal/carlos_angulo_yuxiglobal_com/Documents/Microsoft%20Teams%20Chat%20Files/song-min.mp4" type="video/mp4" >
     </video>
 
-    <video 
+    <video
         class="secondary"
         #secondary 
         [vgMedia]="secondary" 
-        id="secondVideo" 
+        id="secondVideo"
+        [src]="currentItem.url"
         preload="auto">
-        <source src="http://static.videogular.com/assets/videos/videogular.mp4" type="video/mp4">
     </video>
 
-    <audio 
+    <!-- <audio 
         #myAudio
         [vgMedia]="myAudio"     
-        id="audio"
+        id="backgroundAudio"
         preload="auto">
         <source src="http://ia600304.us.archive.org/10/items/TheKyotoConnection-noHeadphonesRequired/03TheBestDaysOfMyLife.mp3" type="audio/mp3">
-    </audio>
+    </audio> -->
 
    
 </vg-player>
 
+<div class="container">
+    <button (click)="prevVideo()">Prev Slide</button>
+    <button (click)="findIndex(0)">Slide 1</button>
+    <button (click)="findIndex(1)">Slide 2</button>
+    <button (click)="findIndex(2)">Slide 3</button>
+    <button (click)="nextVideo()" >Next Slide</button>
+    <span>{{ currentIndex + 1 }}</span>
+</div>
