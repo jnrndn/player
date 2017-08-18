@@ -35,27 +35,39 @@ export class AppComponent {
 
   onPlayerReady(api: VgAPI) {
     this.api = api;
-    // this.audio = this.api.getMediaById('backgroundAudio');
-    // this.audio.volume = 0.6;
     this.api.getMediaById('secondVideo').subscriptions.loadedMetadata.subscribe(() => {
+      if (this.currentIndex === 0) {
+        this.api.getMediaById('firstVideo').currentTime = 0;
+        this.api.getMediaById('backgroundAudio').currentTime = 0;
+      } else if (this.currentIndex === 1) {
+        this.api.getMediaById('firstVideo').currentTime = 20;
+        this.api.getMediaById('backgroundAudio').currentTime = 20;
+      } else {
+        this.api.getMediaById('firstVideo').currentTime = 40;
+        this.api.getMediaById('backgroundAudio').currentTime = 40;
+      }
       this.playVideo();
     });
     this.api.getMediaById('secondVideo').subscriptions.ended.subscribe(() => {
       this.nextVideo();
       this.api.pause();
     });
-    this.api.getMediaById('secondVideo').subscriptions.seeking.subscribe(timeSeeked => {
+    this.api.getMediaById('secondVideo').subscriptions.seeked.subscribe(timeSeeked => {
       if (this.currentIndex === 0) {
         this.api.getMediaById('firstVideo').currentTime = timeSeeked.target.currentTime;
+        this.api.getMediaById('backgroundAudio').currentTime = timeSeeked.target.currentTime;
       } else if (this.currentIndex === 1) {
         this.api.getMediaById('firstVideo').currentTime = timeSeeked.target.currentTime + 20;
+        this.api.getMediaById('backgroundAudio').currentTime = timeSeeked.target.currentTime + 20;
       } else {
         this.api.getMediaById('firstVideo').currentTime = timeSeeked.target.currentTime + 40;
+        this.api.getMediaById('backgroundAudio').currentTime = timeSeeked.target.currentTime + 40;
       }
     });
   }
 
   nextVideo() {
+    this.api.pause();
     this.currentIndex++;
     if (this.currentIndex === this.source.length) {
       this.currentIndex = 0;
@@ -73,8 +85,9 @@ export class AppComponent {
   }
 
   prevVideo() {
+    this.api.pause();
     this.currentIndex--;
-    if (this.currentIndex === this.source.length) {
+    if (this.currentIndex === -1) {
       this.currentIndex = 0;
     }
     this.currentItem = this.source[this.currentIndex];

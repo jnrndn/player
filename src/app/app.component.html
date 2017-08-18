@@ -34,10 +34,10 @@
     </vg-controls>
 
 
-    <!-- <vg-controls class="bottom">
+    <vg-controls class="bottom">
         <vg-mute vgFor="backgroundAudio" ></vg-mute>
         <vg-volume vgFor="backgroundAudio"></vg-volume>
-    </vg-controls> -->
+    </vg-controls>
 
     <video
         class="primary"
@@ -57,22 +57,21 @@
         preload="auto">
     </video>
 
-    <!-- <audio 
+    <audio 
         #myAudio
         [vgMedia]="myAudio"     
         id="backgroundAudio"
         preload="auto">
         <source src="http://ia600304.us.archive.org/10/items/TheKyotoConnection-noHeadphonesRequired/03TheBestDaysOfMyLife.mp3" type="audio/mp3">
-    </audio> -->
+    </audio>
 
    
 </vg-player>
 
 <div class="container">
-    <button (click)="prevVideo()">Prev Slide</button>
+    <button (click)="prevVideo()"> << Prev Slide</button>
     <button (click)="findIndex(0)">Slide 1</button>
     <button (click)="findIndex(1)">Slide 2</button>
     <button (click)="findIndex(2)">Slide 3</button>
-    <button (click)="nextVideo()" >Next Slide</button>
-    <span>{{ currentIndex + 1 }}</span>
+    <button (click)="nextVideo()" >Next Slide >></button>
 </div>
