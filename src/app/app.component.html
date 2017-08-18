@@ -6,21 +6,27 @@
         <vg-play-pause></vg-play-pause>
         <vg-playback-button></vg-playback-button>
 
-        <vg-time-display vgProperty="current" vgFormat="mm:ss" vgFor="secondVideo"></vg-time-display>
+        <vg-time-display *ngIf="flag" vgProperty="current" vgFormat="mm:ss" vgFor="secondVideo"></vg-time-display>
+        <vg-time-display *ngIf="!flag" vgProperty="current" vgFormat="mm:ss" vgFor="thirdVideo"></vg-time-display>
 
-        <vg-scrub-bar [vgSlider]="true">
+        <vg-scrub-bar *ngIf="flag" [vgSlider]="true">
             <vg-scrub-bar-current-time [vgSlider]="true" vgFor="secondVideo"></vg-scrub-bar-current-time>
             <vg-scrub-bar-buffering-time vgFor="secondVideo"></vg-scrub-bar-buffering-time>
         </vg-scrub-bar>
+        <vg-scrub-bar *ngIf="!flag" [vgSlider]="true">
+            <vg-scrub-bar-current-time [vgSlider]="true" vgFor="thirdVideo"></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time vgFor="thirdVideo"></vg-scrub-bar-buffering-time>
+        </vg-scrub-bar>
+            
         <vg-scrub-bar [vgSlider]="true"class="top" >
             <vg-scrub-bar-current-time [vgSlider]="true" vgFor="firstVideo"></vg-scrub-bar-current-time>
             <vg-scrub-bar-buffering-time vgFor="firstVideo"></vg-scrub-bar-buffering-time>
         </vg-scrub-bar>
 
-        <vg-time-display vgProperty="left" vgFormat="mm:ss" vgFor="secondVideo"></vg-time-display>
-        <vg-time-display vgProperty="total" vgFormat="mm:ss" vgFor="secondVideo"></vg-time-display>
-        <vg-time-display vgProperty="left" vgFormat="mm:ss" vgFor="firstVideo"></vg-time-display>
-        <vg-time-display vgProperty="total" vgFormat="mm:ss" vgFor="firstVideo"></vg-time-display>
+        <vg-time-display *ngIf="flag" vgProperty="left" vgFormat="mm:ss" vgFor="secondVideo"></vg-time-display>
+        <vg-time-display *ngIf="flag" vgProperty="total" vgFormat="mm:ss" vgFor="secondVideo"></vg-time-display>
+        <vg-time-display *ngIf="!flag" vgProperty="left" vgFormat="mm:ss" vgFor="thirdVideo"></vg-time-display>
+        <vg-time-display *ngIf="!flag" vgProperty="total" vgFormat="mm:ss" vgFor="thirdVideo"></vg-time-display>
 
         <vg-mute vgFor="secondVideo" ></vg-mute>
         <vg-volume vgFor="secondVideo" ></vg-volume>
@@ -40,22 +46,35 @@
     </vg-controls>
 
     <video
-        class="primary"
-        #primary
-        [vgMedia]="primary"
-        id="firstVideo"
-        preload="auto">
-        <source src="https://apexsct-my.sharepoint.com/personal/carlos_angulo_yuxiglobal_com/Documents/Microsoft%20Teams%20Chat%20Files/song-min.mp4" type="video/mp4" >
+    class="primary"
+    #primary
+    [vgMedia]="primary"
+    id="firstVideo"
+    preload="auto">
+    <source src="https://apexsct-my.sharepoint.com/personal/juan_rendon_yuxiglobal_com/Documents/Microsoft%20Teams%20Chat%20Files/song-min.mp4" type="video/mp4" >
     </video>
-
-    <video
+    
+    <div
         class="secondary"
-        #secondary 
-        [vgMedia]="secondary" 
-        id="secondVideo"
-        [src]="currentItem.url"
-        preload="auto">
-    </video>
+    >
+        <video
+            id="secondVideo"
+            preload="auto"
+            #secondary 
+            [src]="currentItem.url"
+            [vgMedia]="secondary"
+            [style.zIndex]="flag ? 100 : 0">
+        </video>
+        
+        <video
+            id="thirdVideo"
+            preload="auto"
+            #third 
+            [src]="secondItem.url"
+            [vgMedia]="third" 
+            [style.zIndex]="!flag ? 100 : 0">
+        </video>
+    </div>
 
     <audio 
         #myAudio

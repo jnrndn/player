@@ -1,5 +1,5 @@
 video {
-    width: 50%;
+    /* width: 50%; */
     display: flex;
 }
 
@@ -8,7 +8,18 @@ width: 30%;
 }
 
 .secondary {
-width: 70%;
+    width: 70%;
+    position: relative;
+    padding-bottom: 40%;
+}
+
+.secondary video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 vg-controls {
