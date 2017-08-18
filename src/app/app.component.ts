@@ -33,6 +33,14 @@ export class AppComponent {
 
   constructor() { }
 
+  /**
+   * How is the video made? does the user have to check by himself the length of
+   * the narration video and all other videos to ensure the other videos match the
+   * length of the narration video?
+   *
+   * How do we get the information of the API, can we ensure that we get exactly
+   * the amount of videos with the duration such as they match the narration one?
+   */
   onPlayerReady(api: VgAPI) {
     this.api = api;
     this.api.getMediaById('secondVideo').subscriptions.loadedMetadata.subscribe(() => {
@@ -68,10 +76,7 @@ export class AppComponent {
 
   nextVideo() {
     this.api.pause();
-    this.currentIndex++;
-    if (this.currentIndex === this.source.length) {
-      this.currentIndex = 0;
-    }
+    this.currentIndex = ++this.currentIndex % this.source.length;
     this.currentItem = this.source[this.currentIndex];
   }
 
@@ -86,10 +91,10 @@ export class AppComponent {
 
   prevVideo() {
     this.api.pause();
-    this.currentIndex--;
-    if (this.currentIndex === -1) {
-      this.currentIndex = 0;
-    }
+   if (this.currentIndex < 1) {
+     return;
+   }
+   this.currentIndex--;
     this.currentItem = this.source[this.currentIndex];
   }
 
