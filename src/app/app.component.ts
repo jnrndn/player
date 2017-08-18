@@ -1,3 +1,4 @@
+import { IPlayable } from 'videogular2/src/core/vg-media/i-playable';
 import { Component } from '@angular/core';
 import { VgAPI } from 'videogular2/core';
 import 'rxjs/add/operator/map';
@@ -15,9 +16,9 @@ export interface ISource {
 
 export class AppComponent {
 
-  firstVideo: any;
-  secondVideo: any;
-  audio: any;
+  firstVideo: IPlayable;
+  secondVideo: IPlayable;
+  audio: IPlayable;
   api: VgAPI;
 
   source: Array<ISource> = [
@@ -35,33 +36,36 @@ export class AppComponent {
 
   onPlayerReady(api: VgAPI) {
     this.api = api;
-    this.api.getMediaById('secondVideo').subscriptions.loadedMetadata.subscribe(() => {
+    this.firstVideo =  this.api.getMediaById('firstVideo');
+    this.secondVideo = this.api.getMediaById('secondVideo');
+    this.audio = this.api.getMediaById('backgroundAudio');
+    this.secondVideo.subscriptions.loadedMetadata.subscribe(() => {
       if (this.currentIndex === 0) {
-        this.api.getMediaById('firstVideo').currentTime = 0;
-        this.api.getMediaById('backgroundAudio').currentTime = 0;
+        this.firstVideo.currentTime = 0;
+        this.audio.currentTime = 0;
       } else if (this.currentIndex === 1) {
-        this.api.getMediaById('firstVideo').currentTime = 20;
-        this.api.getMediaById('backgroundAudio').currentTime = 20;
+        this.firstVideo.currentTime = 20;
+        this.audio.currentTime = 20;
       } else {
-        this.api.getMediaById('firstVideo').currentTime = 40;
-        this.api.getMediaById('backgroundAudio').currentTime = 40;
+        this.firstVideo.currentTime = 40;
+        this.audio.currentTime = 40;
       }
       this.playVideo();
     });
-    this.api.getMediaById('secondVideo').subscriptions.ended.subscribe(() => {
+    this.secondVideo.subscriptions.ended.subscribe(() => {
       this.nextVideo();
       this.api.pause();
     });
-    this.api.getMediaById('secondVideo').subscriptions.seeked.subscribe(timeSeeked => {
+    this.secondVideo.subscriptions.seeked.subscribe(timeSeeked => {
       if (this.currentIndex === 0) {
-        this.api.getMediaById('firstVideo').currentTime = timeSeeked.target.currentTime;
-        this.api.getMediaById('backgroundAudio').currentTime = timeSeeked.target.currentTime;
+        this.firstVideo.currentTime = timeSeeked.target.currentTime;
+        this.audio.currentTime = timeSeeked.target.currentTime;
       } else if (this.currentIndex === 1) {
-        this.api.getMediaById('firstVideo').currentTime = timeSeeked.target.currentTime + 20;
-        this.api.getMediaById('backgroundAudio').currentTime = timeSeeked.target.currentTime + 20;
+        this.firstVideo.currentTime = timeSeeked.target.currentTime + 20;
+        this.audio.currentTime = timeSeeked.target.currentTime + 20;
       } else {
-        this.api.getMediaById('firstVideo').currentTime = timeSeeked.target.currentTime + 40;
-        this.api.getMediaById('backgroundAudio').currentTime = timeSeeked.target.currentTime + 40;
+        this.firstVideo.currentTime = timeSeeked.target.currentTime + 40;
+        this.audio.currentTime = timeSeeked.target.currentTime + 40;
       }
     });
   }
